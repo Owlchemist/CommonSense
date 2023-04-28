@@ -16,12 +16,11 @@ namespace CommonSense
         {
             public static bool Prefix(ThingFilter __instance, ThingDef thing)
             {
-                List<ThingDef> allowAllWhoCanMake = Traverse.Create(__instance).Field("allowAllWhoCanMake").GetValue<List<ThingDef>>();
+                List<ThingDef> allowAllWhoCanMake = __instance.allowAllWhoCanMake;
                 if (allowAllWhoCanMake == null)
                 {
-                    allowAllWhoCanMake = new List<ThingDef>();
-                    Traverse.Create(__instance).Field("allowAllWhoCanMake").SetValue(allowAllWhoCanMake);
-                    allowAllWhoCanMake.Add(thing);
+                    __instance.allowAllWhoCanMake = new List<ThingDef>();
+                    __instance.allowAllWhoCanMake.Add(thing);
                 }
                 return true;
             }
@@ -103,6 +102,10 @@ namespace CommonSense
         [HarmonyPatch(typeof(ThingFilter), nameof(ThingFilter.Summary), MethodType.Getter)]
         public static class ThingFilter_Summary_CommonSensePatch
         {
+            public static bool Prepare()
+            {
+                return Settings.gui_extended_recipe;
+            }
             public static bool Prefix(ThingFilter __instance, ref string __result)
             {
                 if (!Settings.gui_extended_recipe)
@@ -113,8 +116,8 @@ namespace CommonSense
                     __result = __instance.customSummary;
                 }
 
-                List<ThingDef> thingDefs = Traverse.Create(__instance).Field("thingDefs").GetValue<List<ThingDef>>();
-                List<string> categories = Traverse.Create(__instance).Field("categories").GetValue<List<string>>();
+                List<ThingDef> thingDefs = __instance.thingDefs;
+                List<string> categories = __instance.categories;
                 //List<string> tradeTagsToAllow = Traverse.Create(__instance).Field("tradeTagsToAllow").GetValue<List<string>>();
                 //List<string> tradeTagsToDisallow = Traverse.Create(__instance).Field("tradeTagsToDisallow").GetValue<List<string>>();
                 //List<string> thingSetMakerTagsToAllow = Traverse.Create(__instance).Field("thingSetMakerTagsToAllow").GetValue<List<string>>();
@@ -123,14 +126,14 @@ namespace CommonSense
                 //List<string> specialFiltersToAllow = Traverse.Create(__instance).Field("specialFiltersToAllow").GetValue<List<string>>();
                 //List<string> specialFiltersToDisallow = Traverse.Create(__instance).Field("specialFiltersToDisallow").GetValue<List<string>>();
                 //List<StuffCategoryDef> stuffCategoriesToAllow = Traverse.Create(__instance).Field("stuffCategoriesToAllow").GetValue<List<StuffCategoryDef>>();
-                List<ThingDef> allowAllWhoCanMake = Traverse.Create(__instance).Field("allowAllWhoCanMake").GetValue<List<ThingDef>>();
+                List<ThingDef> allowAllWhoCanMake = __instance.allowAllWhoCanMake;
                 //FoodPreferability disallowWorsePreferability = Traverse.Create(__instance).Field("disallowWorsePreferability").GetValue<FoodPreferability>();
                 //bool disallowInedibleByHuman = Traverse.Create(__instance).Field("disallowInedibleByHuman").GetValue<bool>();
                 //Type allowWithComp = Traverse.Create(__instance).Field("allowWithComp").GetValue<Type>();
                 //Type disallowWithComp = Traverse.Create(__instance).Field("disallowWithComp").GetValue<Type>();
                 //float disallowCheaperThan = Traverse.Create(__instance).Field("disallowCheaperThan").GetValue<float>();
                 //List<ThingDef> disallowedThingDefs = Traverse.Create(__instance).Field("disallowedThingDefs").GetValue<List<ThingDef>>();
-                HashSet<ThingDef> allowedDefs = Traverse.Create(__instance).Field("allowedDefs").GetValue<HashSet<ThingDef>>();
+                HashSet<ThingDef> allowedDefs = __instance.allowedDefs;
 
 
                 if (!categories.NullOrEmpty())

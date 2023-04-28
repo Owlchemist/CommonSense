@@ -14,6 +14,10 @@ namespace CommonSense
         [HarmonyPatch(typeof(WorkGiver_ClearSnow), "ShouldSkip")]
         public static class WorkGiver_ClearSnow_ShouldSkip_CommonSensePatch
         {
+            public static bool Prepare()
+            {
+                return Settings.skip_snow_clean;
+            }
             public static bool Prefix(ref bool __result, Pawn pawn)
             {
                 if (!Settings.skip_snow_clean || pawn.Map.weatherManager.SnowRate == 0 && pawn.Map.weatherManager.RainRate == 0)

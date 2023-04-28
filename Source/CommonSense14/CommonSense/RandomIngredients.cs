@@ -16,6 +16,10 @@ namespace CommonSense
     {
         private static readonly Dictionary<ThingDef, RecipeDef> hTable = new Dictionary<ThingDef, RecipeDef>();
 
+        public static bool Prepare()
+        {
+            return Settings.add_meal_ingredients;
+        }
         public static void Postfix(Thing __result, ThingDef def, ThingDef stuff)
         {
             if (!Settings.add_meal_ingredients || __result == null || !__result.def.IsIngestible)

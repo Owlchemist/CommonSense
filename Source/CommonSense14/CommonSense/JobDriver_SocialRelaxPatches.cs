@@ -221,6 +221,11 @@ namespace CommonSense
             yield break;
         }
 
+        public static bool Prepare()
+        {
+            return Settings.social_relax_economy && Settings.adv_cleaning_ingest;
+        }
+        
         public static bool Prefix(ref IEnumerable<Toil> __result, JobDriver_SocialRelax __instance)
         {
             if (!Settings.social_relax_economy && !Settings.adv_cleaning_ingest)

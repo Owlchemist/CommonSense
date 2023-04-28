@@ -16,7 +16,6 @@ namespace CommonSense
     [HarmonyPatch(typeof(JobDriver_DoBill), "MakeNewToils")]
     static class JobDriver_DoBill_MakeNewToils_CommonSensePatch
     {
-        static MethodInfo LJumpIfTargetInsideBillGiver = AccessTools.Method(typeof(JobDriver_DoBill), "JumpIfTargetInsideBillGiver");
 
         static IEnumerable<Toil> DoMakeToils(JobDriver_DoBill __instance)
         {
@@ -313,7 +312,7 @@ namespace CommonSense
                 Toil JumpToKeepTakingToInventory = Toils_Jump.JumpIfHaveTargetInQueue(TargetIndex.B, keepTakingToInventory);
                 yield return checklist;
                 yield return extract;
-                yield return (Toil)LJumpIfTargetInsideBillGiver.Invoke(__instance, new object[] { keepTakingToInventory, TargetIndex.B, TargetIndex.A });
+                yield return JobDriver_DoBill.JumpIfTargetInsideBillGiver(keepTakingToInventory, TargetIndex.B, TargetIndex.A);
 
                 yield return Toils_Jump.JumpIf(PickUpToInventory, () => __instance.job.targetB.Thing.ParentHolder == __instance.pawn.inventory);
                 //yield return DropTargetThingIfInInventory;
@@ -442,6 +441,10 @@ namespace CommonSense
             yield break;
         }
 
+        public static bool Prepare()
+        {
+            return Settings.adv_cleaning && Settings.adv_haul_all_ings;
+        }
         public static bool Prefix(ref IEnumerable<Toil> __result, ref JobDriver_DoBill __instance)
         {
             if (!Settings.adv_cleaning && !Settings.adv_haul_all_ings)

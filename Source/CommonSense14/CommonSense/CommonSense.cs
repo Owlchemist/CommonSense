@@ -15,6 +15,17 @@ namespace CommonSense
             var harmony = new Harmony("net.avilmask.rimworld.mod.CommonSense");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
             base.GetSettings<Settings>();
+
+            if (!Settings.fun_police)
+            {
+                System.Type compJoyToppedOff = typeof(CompJoyToppedOff);
+                var list = DefDatabase<ThingDef>.AllDefsListForReading;
+                for (int i = list.Count; i-- > 0;)
+                {
+                    var def = list[i];
+                    if (def.HasComp(compJoyToppedOff)) def.comps.RemoveAll(x => x.compClass == compJoyToppedOff);
+                }
+            }
         }
         
         public void Save()

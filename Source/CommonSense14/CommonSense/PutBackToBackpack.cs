@@ -33,6 +33,8 @@ namespace CommonSense
 
     public class PutBackToBackpack
     {
+        //TODO: Check out this comp
+        
         //private void CleanupCurrentJob(JobCondition condition, bool releaseReservations, bool cancelBusyStancesSoft = true)
         [HarmonyPatch(typeof(Pawn_JobTracker), "CleanupCurrentJob")]
         static class Pawn_CleanupCurrentJob_CommonSensePatch

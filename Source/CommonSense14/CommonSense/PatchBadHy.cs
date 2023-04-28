@@ -33,6 +33,8 @@ namespace CommonSense
             private static Type TNeed_Bladder = null;
             public static bool Prepare()
             {
+                if (!Settings.fun_police) return false;
+
                 Type type;
                 if ((type = AccessTools.TypeByName("JobGiver_UseToilet")) != null)
                 {
@@ -110,6 +112,8 @@ namespace CommonSense
             private static Type TNeed_Hygiene = null;
             public static bool Prepare()
             {
+                if (!Settings.fun_police) return false;
+
                 Type type;
                 if ((type = AccessTools.TypeByName("JobGiver_HaveWash")) != null)
                 {
@@ -188,6 +192,8 @@ namespace CommonSense
             private static Type TNeed_Thirst = null;
             public static bool Prepare()
             {
+                if (!Settings.fun_police) return false;
+                
                 Type type;
                 if ((type = AccessTools.TypeByName("JobGiver_DrinkWater")) != null)
                 {

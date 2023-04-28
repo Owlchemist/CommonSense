@@ -15,6 +15,10 @@ namespace CommonSense
     [HarmonyPatch(typeof(RCellFinder), "CanWanderToCell")]
     public static class RCellFinder_CanWanderToCell_CommonSensePatch
     {
+        public static bool Prepare()
+        {
+            return Settings.polite_wander;
+        }
         public static void Postfix(ref bool __result, IntVec3 c, IntVec3 root, Pawn pawn)
         {
             if (!__result) return;
@@ -52,6 +56,10 @@ namespace CommonSense
             return RCellFinder.RandomWanderDestFor(pawn, root, 7, ((Pawn p, IntVec3 v1, IntVec3 v2) => v1.Roofed(p.Map)), PawnUtility.ResolveMaxDanger(pawn, Danger.Deadly));
         }
 
+        public static bool Prepare()
+        {
+            return Settings.safe_wander;
+        }
         public static bool Prefix(Pawn pawn, ref Job __result, JobGiver_Wander __instance)
         {
             if (!pawn.ShouldHideFromWeather() || pawn.Position.Roofed(pawn.Map))
@@ -90,6 +98,8 @@ namespace CommonSense
     [HarmonyPatch]
     public static class JobDriver_Goto_MoveNext_CommonSensePatch
     {
+        //TODO: No prepare?
+        
         internal static MethodBase TargetMethod()
         {
             Type inner = AccessTools.Inner(typeof(JobDriver_Goto), "<MakeNewToils>d__1");

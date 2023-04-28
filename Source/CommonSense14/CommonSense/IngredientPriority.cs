@@ -12,6 +12,10 @@ namespace CommonSense
     public static class IngredientPriority
     {
         [HarmonyPatch(typeof(WorkGiver_DoBill), "TryFindBestBillIngredients")]
+        static bool Prepare()
+        {
+            return Settings.adv_haul_all_ings || Settings.prefer_spoiling_ingredients || Settings.prefer_spoiling_meals;
+        }
         public static class WorkGiver_DoBill_TryStartNewDoBillJob_CommonSensePatch
         {
             public static void Postfix(WorkGiver_DoBill __instance, bool __result, Pawn pawn, List<ThingCount> chosen)

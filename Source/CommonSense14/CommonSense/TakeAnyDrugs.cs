@@ -10,6 +10,10 @@ namespace CommonSense
     [HarmonyPatch(typeof(FoodUtility), "WillIngestFromInventoryNow")]
     public static class FoodUtility_WillIngestFromInventoryNow_CommonSensePatch
     {
+        public static bool Prepare()
+        {
+            return Settings.ingest_any_drugs;
+        }
         public static bool Prefix(ref bool __result, Pawn pawn, Thing inv)
         {
             if (!Settings.ingest_any_drugs)

@@ -13,6 +13,10 @@ namespace CommonSense
     [HarmonyPatch(typeof(Pawn_DrugPolicyTracker), "AllowedToTakeScheduledNow", new Type[] { typeof(ThingDef) })]
     public static class Pawn_DrugPolicyTracker_AllowedToTakeScheduledNow_CommonSensePatch
     {
+        static bool Prepare()
+        {
+            return Settings.drugs_use_potential_mood;
+        }
         public static bool Prefix(ref bool __result, ref Pawn_DrugPolicyTracker __instance, ref ThingDef thingDef)
         {
             if (!Settings.drugs_use_potential_mood)

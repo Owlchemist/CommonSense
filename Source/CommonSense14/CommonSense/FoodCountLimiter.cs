@@ -12,6 +12,10 @@ namespace CommonSense
     [HarmonyPatch(typeof(JoyGiver_Ingest), "CreateIngestJob")]
     public static class JoyGiver_Ingest_CreateIngestJob_CommonSensePatch
     {
+        static bool Prepare()
+        {
+            return Settings.pick_proper_amount;
+        }
         public static void Postfix(Job __result,Thing ingestible, Pawn pawn)
         {
             //used to be a prefix, but something prevented new job from being taken

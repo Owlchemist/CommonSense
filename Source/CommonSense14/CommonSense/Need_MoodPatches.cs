@@ -18,6 +18,10 @@ namespace CommonSense
         private static readonly FieldInfo LPawn = AccessTools.Field(typeof(Need), "pawn");
         private static readonly PropertyInfo LIsFrozen = AccessTools.Property(typeof(Need), "IsFrozen");
 
+        public static bool Prepare()
+        {
+            return Settings.mood_regen;
+        }
         public static void Postfix(Need_Mood __instance)
         {
             if (!Settings.mood_regen) return;

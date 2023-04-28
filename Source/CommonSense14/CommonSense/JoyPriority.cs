@@ -24,6 +24,10 @@ namespace CommonSense
     [HarmonyPatch(typeof(ThinkNode_Priority_GetJoy), "GetPriority")]
     public static class ThinkNode_Priority_GetJoy_GetPriority_CommonSensePatch
     {
+        public static bool Prepare()
+        {
+            return Settings.fun_police;
+        }
         private static float JoyPolicePriority(Pawn pawn)
         {
             if (!Settings.fun_police)

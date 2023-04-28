@@ -35,6 +35,10 @@ namespace CommonSense
             return b;
         }
 
+        public static bool Prepare()
+        {
+            return Settings.separate_meals;
+        }
         public static void Postfix(ref bool __result, ref Thing __instance, ref Thing other)
         {
             if (!Settings.separate_meals || __instance == null || !__result || other == null || !other.def.IsIngestible)

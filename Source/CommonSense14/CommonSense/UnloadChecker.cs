@@ -212,8 +212,7 @@ namespace CommonSense
                         pawn.equipment.TryTransferEquipmentToContainer(Equipment, pawn.inventory.innerContainer);
                     else if (Apparel != null)
                     {
-                        ThingOwner<Apparel> a = Traverse.Create(pawn.apparel).Field("wornApparel").GetValue<ThingOwner<Apparel>>();
-                        a.TryTransferToContainer(Apparel, pawn.inventory.innerContainer);
+                        pawn.apparel.wornApparel.TryTransferToContainer(Apparel, pawn.inventory.innerContainer);
                     }
                 }
             };

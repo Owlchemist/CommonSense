@@ -156,6 +156,10 @@ namespace CommonSense
         [HarmonyPatch(typeof(Pawn_JobTracker), "StartJob")]
         public static class Pawn_JobTracker_StartJob_CommonSensePatch
         {
+            public static bool Prepare()
+            {
+                return Settings.fun_police || Settings.clean_before_work || Settings.hauling_over_bills;
+            }
             public static bool Prefix(ref Pawn_JobTracker_Crutch __instance, Job newJob, bool fromQueue)
             {
                 try
@@ -227,6 +231,10 @@ namespace CommonSense
         [HarmonyPatch(typeof(Pawn_JobTracker), "EndCurrentJob")]
         public static class Pawn_JobTracker_EndCurrentJob_CommonSensePatch
         {
+            public static bool Prepare()
+            {
+                return Settings.fun_police || Settings.clean_before_work || Settings.clean_after_tending;
+            }
             public static bool Prefix(Pawn_JobTracker_Crutch __instance, JobCondition condition)
             {
                 if (__instance == null || __instance._pawn == null || !__instance._pawn.IsColonistPlayerControlled || __instance.curJob == null)
@@ -250,8 +258,7 @@ namespace CommonSense
                     && __instance.jobQueue.Count == 0 && ProperJob(__instance.curJob, __instance._pawn, JobDefOf.TendPatient))
                 {
                     ThinkTreeDef thinkTree = null;
-                    MethodInfo mi = AccessTools.Method(typeof(Pawn_JobTracker), "DetermineNextJob");
-                    ThinkResult thinkResult = (ThinkResult)mi.Invoke(__instance, new object[] { thinkTree });
+                    ThinkResult thinkResult = __instance.DetermineNextJob(out thinkTree);;
                     if (ProperJob(thinkResult.Job, __instance._pawn, JobDefOf.TendPatient))
                     {
                         Pawn pawn = (Pawn)thinkResult.Job.targetA.Thing;
