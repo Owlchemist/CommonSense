@@ -31,6 +31,11 @@ namespace CommonSense
             }
         }
 
+        public static bool Prepare()
+        {
+            return Settings.fulfill_outdoors;
+        }
+        
         //double pass on trying to give a joyjob. At first, we'll try to give a job, that located outside;
         public static bool Prefix(ref Job __result, ref JobCrutch __instance, ref Pawn pawn)
         {

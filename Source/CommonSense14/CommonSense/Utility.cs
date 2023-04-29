@@ -36,12 +36,11 @@ namespace CommonSense
         public static bool IncapableOfCleaning(Pawn pawn)
         {
             return pawn.def.race == null ||
-                (int)pawn.def.race.intelligence < 2 ||
-                pawn.Faction != Faction.OfPlayer ||
-                (int)pawn.RaceProps.intelligence < 2 ||
+                pawn.def.race.intelligence == Intelligence.Humanlike ||
+                pawn.Faction != Current.gameInt.worldInt.factionManager.ofPlayer ||
+                pawn.workSettings == null || !pawn.workSettings.WorkIsActive(CleaningDef) ||
                 pawn.WorkTagIsDisabled(WorkTags.ManualDumb | WorkTags.Cleaning) ||
-                pawn.InMentalState || pawn.IsBurning() ||
-                pawn.workSettings == null || !pawn.workSettings.WorkIsActive(CleaningDef);
+                pawn.InMentalState || pawn.IsBurning();
         }
 
         public static IEnumerable<Filth> SelectAllFilth(Pawn pawn, LocalTargetInfo target, int Limit = int.MaxValue)
@@ -237,19 +236,20 @@ namespace CommonSense
 
         public static bool ShouldHideFromWeather(this Pawn pawn)
         {
-            if (!Settings.safe_wander
-                || pawn.Faction != Faction.OfPlayer
-                || !pawn.Map.IsPlayerHome
+            
+            if (pawn.Faction != Current.gameInt.worldInt.factionManager.ofPlayer) return false;
+            Map map = pawn.Map;
+            if (!map.IsPlayerHome
                 || pawn.mindState?.duty != null)
                 return false;
             //
             bool cares = pawn.needs?.mood != null;
             if (cares)
             {
-                if (JoyUtility.EnjoyableOutsideNow(pawn.Map))
+                if (JoyUtility.EnjoyableOutsideNow(map))
                     return false;
             }
-            else if (!pawn.RaceProps.IsFlesh || pawn.Map.gameConditionManager.ActiveConditions.FirstOrDefault(x => x is GameCondition_ToxicFallout) == null)
+            else if (!pawn.RaceProps.IsFlesh || !map.gameConditionManager.ActiveConditions.Any(x => x is GameCondition_ToxicFallout))
                 return false;
 
             return true;

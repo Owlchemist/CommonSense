@@ -16,12 +16,11 @@ namespace CommonSense
         {
             if (pawn.needs == null)
                 return null;
-            foreach (var i in (pawn.needs.AllNeeds))
+            var list = pawn.needs.AllNeeds;
+            for (int i = list.Count; i-- > 0;)
             {
-                if (i.GetType() == needType)
-                {
-                    return i;
-                }
+                var need = list[i];
+                if (object.ReferenceEquals(need.GetType(), needType)) return need;
             }
             return null;
         }
@@ -193,7 +192,7 @@ namespace CommonSense
             public static bool Prepare()
             {
                 if (!Settings.fun_police) return false;
-                
+
                 Type type;
                 if ((type = AccessTools.TypeByName("JobGiver_DrinkWater")) != null)
                 {

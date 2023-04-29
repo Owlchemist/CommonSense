@@ -237,7 +237,7 @@ namespace CommonSense
             }
             public static bool Prefix(Pawn_JobTracker_Crutch __instance, JobCondition condition)
             {
-                if (__instance == null || __instance._pawn == null || !__instance._pawn.IsColonistPlayerControlled || __instance.curJob == null)
+                if (__instance == null || __instance._pawn == null || __instance.curJob == null || !__instance._pawn.IsColonistPlayerControlled)
                     return true;
 
                 if (Settings.fun_police && __instance._pawn.needs.joy != null && __instance._pawn.needs.joy.CurLevel > 0.95f)
