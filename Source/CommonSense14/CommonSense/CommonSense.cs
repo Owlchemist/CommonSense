@@ -13,8 +13,8 @@ namespace CommonSense
         public CommonSense(ModContentPack content) : base(content)
         {
             var harmony = new Harmony("net.avilmask.rimworld.mod.CommonSense");
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
             base.GetSettings<Settings>();
+            harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             if (!Settings.fun_police)
             {
